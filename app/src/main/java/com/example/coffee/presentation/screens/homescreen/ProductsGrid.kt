@@ -17,6 +17,7 @@ import com.example.coffee.domain.model.Product
 fun ProductsGrid(
     products: List<Product>,
     navController: NavController,
+    onEvent: (HomeEvent) -> Unit,
     topContents: @Composable () -> Unit
 ) {
     LazyColumn(
@@ -32,22 +33,24 @@ fun ProductsGrid(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 ProductCart(
-                    products = rowItems[0],
+                    product = rowItems[0],
                     modifier = Modifier.weight(1f),
-                    navController = navController
+                    navController = navController,
+                    onFavoriteClick = { id -> onEvent(HomeEvent.ToggleFavorite(id)) },
+                    onAddToCartClick = { id -> onEvent(HomeEvent.AddToCart(id)) }
                 )
                 if (rowItems.size == 2) {
                     ProductCart(
-                        products = rowItems[1],
+                        product = rowItems[1],
                         modifier = Modifier.weight(1f),
-                        navController = navController
+                        navController = navController,
+                        onFavoriteClick = { id -> onEvent(HomeEvent.ToggleFavorite(id)) },
+                        onAddToCartClick = { id -> onEvent(HomeEvent.AddToCart(id)) }
                     )
                 } else {
                     Spacer(modifier = Modifier.weight(1f))
                 }
             }
-
-
         }
     }
 }

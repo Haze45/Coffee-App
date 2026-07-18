@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -20,10 +21,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,11 +31,17 @@ import androidx.compose.ui.unit.dp
 import com.example.coffee.domain.model.Product
 import com.example.coffee.presentation.theme.LightBrown
 import com.example.coffee.presentation.theme.LightGray
+import java.util.Locale
 
 
 @Composable
-fun CartItemCard(product: Product) {
-    var quality by remember { mutableStateOf(1) }
+fun CartItemCard(
+    product: Product,
+    onIncrease: () -> Unit,
+    onDecrease: () -> Unit
+) {
+    // Calculate total price for this item based on quantity
+    val itemTotalPrice = product.price * product.quantity
 
     Card(
         modifier = Modifier
@@ -83,6 +86,16 @@ fun CartItemCard(product: Product) {
                         color = Color.DarkGray
                     )
                 )
+
+                // Display dynamic price
+                Text(
+                    text = "$ ${String.format(Locale.US, "%.2f", itemTotalPrice)}",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = LightBrown,
+                        fontWeight = FontWeight.Bold
+                    ),
+                    modifier = Modifier.padding(top = 4.dp)
+                )
             }
 
             Row(
@@ -90,29 +103,29 @@ fun CartItemCard(product: Product) {
                 horizontalArrangement = Arrangement.spacedBy(18.dp)
             ) {
                 IconButton(
-                    onClick = { quality-- },
-                    enabled = quality > 1,
+                    onClick = onDecrease,
                     modifier = Modifier
                         .background(
-                            color = LightBrown.copy(alpha = 0.23f),
+                            color = if (product.quantity > 1) LightBrown.copy(alpha = 0.23f) else Color.Red.copy(alpha = 0.1f),
                             shape = CircleShape
                         )
                         .size(24.dp)
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Remove,
-                        contentDescription = "Decrease",
-                        tint = LightBrown
+                        imageVector = if (product.quantity > 1) Icons.Default.Remove else Icons.Default.Delete,
+                        contentDescription = if (product.quantity > 1) "Decrease" else "Remove",
+                        tint = if (product.quantity > 1) LightBrown else Color.Red,
+                        modifier = Modifier.size(16.dp)
                     )
                 }
                 Text(
-                    text = quality.toString(),
+                    text = product.quantity.toString(),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = FontWeight.SemiBold
                     )
                 )
                 IconButton(
-                    onClick = { quality++ },
+                    onClick = onIncrease,
                     modifier = Modifier
                         .background(
                             color = LightBrown.copy(alpha = 0.23f),
@@ -123,7 +136,8 @@ fun CartItemCard(product: Product) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = "Increase",
-                        tint = LightBrown
+                        tint = LightBrown,
+                        modifier = Modifier.size(16.dp)
                     )
                 }
             }

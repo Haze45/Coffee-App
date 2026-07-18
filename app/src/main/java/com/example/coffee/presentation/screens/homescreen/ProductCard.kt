@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -33,7 +35,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.coffee.R
 import com.example.coffee.domain.model.Product
 import com.example.coffee.presentation.navigation.Routes
 import com.example.coffee.presentation.theme.IvoryWhite
@@ -42,15 +43,17 @@ import com.example.coffee.presentation.theme.LightGray
 
 @Composable
 fun ProductCart(
-    products: Product,
+    product: Product,
     modifier: Modifier = Modifier,
-    navController: NavController
+    navController: NavController,
+    onFavoriteClick: (Int) -> Unit,
+    onAddToCartClick: (Int) -> Unit
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { navController.navigate(Routes.DetailScreen(products.id)) },
+            .clickable { navController.navigate(Routes.DetailScreen(product.id)) },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = LightGray
@@ -66,7 +69,7 @@ fun ProductCart(
                     .height(160.dp)
             ) {
                 Image(
-                    painter = painterResource(id = products.imageRes),
+                    painter = painterResource(id = product.imageRes),
                     contentDescription = "Product Image",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -81,12 +84,14 @@ fun ProductCart(
                             color = LightGray.copy(alpha = 0.7f),
                             shape = RoundedCornerShape(8.dp)
                         )
+                        .clickable { onFavoriteClick(product.id) }
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Icon(
-                        painter = painterResource(id = R.drawable.regular_outline_heart),
-                        contentDescription = "Add to Favorite",
-                        tint = LightBrown,
+                        imageVector = if (product.isFavorite) Icons.Default.Favorite
+                        else Icons.Default.FavoriteBorder,
+                        contentDescription = "Favorite",
+                        tint = if (product.isFavorite) Color.Red else LightBrown,
                         modifier = Modifier.size(24.dp)
                     )
                 }
@@ -95,7 +100,7 @@ fun ProductCart(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = products.name,
+                text = product.name,
                 style = MaterialTheme.typography.titleMedium.copy(
                     color = Color.Black,
                     fontWeight = FontWeight.SemiBold
@@ -105,7 +110,7 @@ fun ProductCart(
             Spacer(modifier = Modifier.height(4.dp))
 
             Text(
-                text = products.description,
+                text = product.description,
                 style = MaterialTheme.typography.titleSmall.copy(
                     color = Color.Black,
 
@@ -121,14 +126,14 @@ fun ProductCart(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "$${products.price}",
+                    text = "$${product.price}",
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.Bold,
                         color = LightBrown
                     )
                 )
                 IconButton(
-                    onClick = {},
+                    onClick = { onAddToCartClick(product.id) },
                     modifier = Modifier.background(
                         color = LightBrown,
                         shape = RoundedCornerShape(10.dp)

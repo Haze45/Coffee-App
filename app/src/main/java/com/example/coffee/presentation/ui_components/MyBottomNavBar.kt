@@ -33,7 +33,7 @@ fun MyBottomNavBar(navController: NavController, routes: String) {
         containerColor = MaterialTheme.colorScheme.surface,
         modifier = Modifier.height(100.dp)
     ) {
-        navItems.forEachIndexed { index, item ->
+        navItems.forEach { item ->
             NavigationBarItem(
                 icon = {
                     Icon(
