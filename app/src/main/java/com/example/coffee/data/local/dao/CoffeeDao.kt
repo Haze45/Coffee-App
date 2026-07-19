@@ -29,4 +29,7 @@ interface CoffeeDao {
 
     @Query("UPDATE coffee_table SET quantity = :quantity WHERE id = :id")
     suspend fun updateQuantity(id: Int, quantity: Int)
+
+    @Query("SELECT * FROM coffee_table WHERE isFavorite = 1")
+    fun getFavouriteProducts(): Flow<List<CoffeeEntity>>
 }

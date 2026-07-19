@@ -11,4 +11,5 @@ interface CoffeeRepository {
     fun getCartItems(): Flow<List<Product>>
     suspend fun updateCartStatus(id: Int, isInCart: Boolean)
     suspend fun updateQuantity(id: Int, quantity: Int)
+    fun getFavouriteProducts(): Flow<List<Product>>
 }

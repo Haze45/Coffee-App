@@ -22,7 +22,8 @@ object UseCaseModule {
             insertProducts = InsertProductsUseCase(repository),
             getCartItems = GetCartItemsUseCase(repository),
             updateCartStatus = UpdateCartStatusUseCase(repository),
-            updateQuantity = UpdateQuantityUseCase(repository)
+            updateQuantity = UpdateQuantityUseCase(repository),
+            getFavouriteProducts = GetFavouriteProductsUseCase(repository)
         )
     }
 }
