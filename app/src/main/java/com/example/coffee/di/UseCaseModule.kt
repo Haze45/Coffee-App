@@ -1,6 +1,7 @@
 package com.example.coffee.di
 
 import com.example.coffee.domain.repository.CoffeeRepository
+import com.example.coffee.domain.repository.LocationTracker
 import com.example.coffee.domain.use_case.*
 import dagger.Module
 import dagger.Provides
@@ -14,7 +15,10 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideCoffeeUseCases(repository: CoffeeRepository): CoffeeUseCases {
+    fun provideCoffeeUseCases(
+        repository: CoffeeRepository,
+        locationTracker: LocationTracker
+    ): CoffeeUseCases {
         return CoffeeUseCases(
             getProducts = GetProductsUseCase(repository),
             getProductById = GetProductByIdUseCase(repository),
@@ -23,7 +27,8 @@ object UseCaseModule {
             getCartItems = GetCartItemsUseCase(repository),
             updateCartStatus = UpdateCartStatusUseCase(repository),
             updateQuantity = UpdateQuantityUseCase(repository),
-            getFavouriteProducts = GetFavouriteProductsUseCase(repository)
+            getFavouriteProducts = GetFavouriteProductsUseCase(repository),
+            getLocation = GetLocationUseCase(locationTracker)
         )
     }
 }

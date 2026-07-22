@@ -1,7 +1,11 @@
 package com.example.coffee.presentation.screens.homescreen
 
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,13 +43,23 @@ fun HomeScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    // Permission launcher for location
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+        ) {
+            viewModel.onEvent(HomeEvent.DetectLocation)
+        }
+    }
+
     Scaffold(
         bottomBar = { MyBottomNavBar(navController, "Home") }
     ) { innerPadding ->
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
-            // Background gradient for the top section - stays full-bleed
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -64,28 +78,36 @@ fun HomeScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = innerPadding.calculateTopPadding()) // Handle status bar
-                    .padding(bottom = innerPadding.calculateBottomPadding()) // Handle navigation bar
-                    .padding(horizontal = 16.dp)
+                    .padding(top = innerPadding.calculateTopPadding())
+                    .padding(bottom = innerPadding.calculateBottomPadding())
+                    .padding(horizontal = 7.dp)
             ) {
                 ProductsGrid(
                     products = state.products,
                     navController = navController,
                     onEvent = viewModel::onEvent
                 ) {
-                    // Header content inside the scrollable list
                     Column {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = "Location",
-                            color = Color.LightGray, // Improved visibility
-                            fontSize = 14.sp
+                            color = Color.LightGray,
+                            fontSize = 12.sp
                         )
 
                         Spacer(modifier = Modifier.height(4.dp))
 
                         Row(
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.clickable {
+                                // Request permissions before detecting location
+                                locationPermissionLauncher.launch(
+                                    arrayOf(
+                                        Manifest.permission.ACCESS_FINE_LOCATION,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    )
+                                )
+                            }
                         ) {
                             Text(
                                 text = state.location,
@@ -106,7 +128,7 @@ fun HomeScreen(
                             onValueChange = { viewModel.onEvent(HomeEvent.OnSearchTextChange(it)) }
                         )
 
-                        Spacer(modifier = Modifier.height(40.dp))
+                        Spacer(modifier = Modifier.height(30.dp))
                         Image(
                             painter = painterResource(id = R.drawable.banner_1),
                             contentDescription = "Home Banner",

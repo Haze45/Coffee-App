@@ -8,5 +8,6 @@ data class CoffeeUseCases(
     val getCartItems: GetCartItemsUseCase,
     val updateCartStatus: UpdateCartStatusUseCase,
     val updateQuantity: UpdateQuantityUseCase,
-    val getFavouriteProducts: GetFavouriteProductsUseCase
+    val getFavouriteProducts: GetFavouriteProductsUseCase,
+    val getLocation: GetLocationUseCase
 )

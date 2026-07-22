@@ -25,17 +25,19 @@ class HomeViewModel @Inject constructor(
     private val _selectedCategory = MutableStateFlow("All Coffee")
     private val _products = MutableStateFlow<List<Product>>(emptyList())
     private val _isLoading = MutableStateFlow(false)
+    private val _location = MutableStateFlow("Bokaro Steel City, Jharkhand")
 
     val state: StateFlow<HomeUiState> = combine(
         _searchText,
         _selectedCategory,
         _products,
-        _isLoading
-    ) { searchText, selectedCategory, products, isLoading ->
+        _isLoading,
+        _location
+    ) { searchText, selectedCategory, products, isLoading, location ->
 
         val query = searchText.lowercase().trim()
 
-        val filtered = products.filter { product ->
+        val filteredProducts = products.filter { product ->
             val matchesCategory = selectedCategory == "All Coffee" ||
                     product.name.contains(selectedCategory, ignoreCase = true)
 
@@ -47,10 +49,11 @@ class HomeViewModel @Inject constructor(
         }
 
         HomeUiState(
-            products = filtered,
+            products = filteredProducts,
             searchText = searchText,
             selectedCategory = selectedCategory,
-            isLoading = isLoading
+            isLoading = isLoading,
+            location = location
         )
     }.stateIn(
         scope = viewModelScope,
@@ -86,8 +89,16 @@ class HomeViewModel @Inject constructor(
 
             is HomeEvent.AddToCart -> {
                 viewModelScope.launch {
-                    // Update the product's isInCart status in the local database
                     coffeeUseCases.updateCartStatus(event.id, true)
+                }
+            }
+
+            is HomeEvent.DetectLocation -> {
+                viewModelScope.launch {
+                    val detectedLocation = coffeeUseCases.getLocation()
+                    if (detectedLocation != null) {
+                        _location.value = detectedLocation
+                    }
                 }
             }
         }
@@ -149,4 +160,5 @@ sealed class HomeEvent {
     data class OnSearchTextChange(val searchText: String) : HomeEvent()
     data class OnCategorySelected(val category: String) : HomeEvent()
     data class AddToCart(val id: Int) : HomeEvent()
+    object DetectLocation : HomeEvent()
 }

@@ -51,7 +51,7 @@ fun ProductCart(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(7.dp)
             .clickable { navController.navigate(Routes.DetailScreen(product.id)) },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
@@ -60,12 +60,12 @@ fun ProductCart(
 
     ) {
         Column(
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(5.dp)
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(160.dp)
+                    .height(140.dp)
             ) {
                 Image(
                     painter = painterResource(id = product.imageRes),
@@ -73,7 +73,7 @@ fun ProductCart(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(24.dp))
+                        .clip(RoundedCornerShape(18.dp))
                 )
                 Box(
                     modifier = Modifier
@@ -90,7 +90,7 @@ fun ProductCart(
                         painter = painterResource(id = R.drawable.regular_outline_heart),
                         contentDescription = "Favorite",
                         tint = if (product.isFavorite) Color.Red else LightBrown,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(21.dp)
                     )
                 }
             }
@@ -116,7 +116,7 @@ fun ProductCart(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(15.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -140,8 +140,9 @@ fun ProductCart(
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = "Add to Cart",
-                        tint = IvoryWhite
-                    )
+                        tint = IvoryWhite,
+
+                        )
                 }
             }
 
