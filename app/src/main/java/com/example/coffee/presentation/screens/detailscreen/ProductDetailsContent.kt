@@ -1,11 +1,9 @@
 package com.example.coffee.presentation.screens.detailscreen
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,10 +16,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,17 +28,18 @@ import androidx.compose.ui.unit.sp
 import com.example.coffee.R
 import com.example.coffee.domain.model.Product
 import com.example.coffee.presentation.theme.IvoryWhite
+import com.example.coffee.presentation.theme.LightBrown
 
 @Composable
 fun ProductDetailsContent(
     product: Product,
-    innerPadding: PaddingValues
+    selectedSize: String,
+    onSizeSelected: (String) -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
-            .padding(innerPadding)
     ) {
         Image(
             painter = painterResource(product.imageRes),
@@ -53,7 +48,6 @@ fun ProductDetailsContent(
                 .fillMaxWidth()
                 .height(250.dp)
                 .clip(RoundedCornerShape(16.dp)),
-
             contentScale = ContentScale.FillWidth
         )
 
@@ -88,8 +82,8 @@ fun ProductDetailsContent(
                         shape = RoundedCornerShape(10.dp)
                     )
                     .size(36.dp)
-                    .padding(6.dp)
-
+                    .padding(6.dp),
+                tint = LightBrown
             )
         }
         Spacer(modifier = Modifier.height(24.dp))
@@ -109,7 +103,6 @@ fun ProductDetailsContent(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-
         Text(
             text = product.description,
             fontSize = 16.sp,
@@ -128,8 +121,6 @@ fun ProductDetailsContent(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        var selectedSizeText by remember { mutableStateOf("M") }
-
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(30.dp)
@@ -137,15 +128,13 @@ fun ProductDetailsContent(
             listOf("S", "M", "L").forEach { size ->
                 SelectSizeChip(
                     sizeText = size,
-                    selected = selectedSizeText == size,
-                    onClick = { selectedSizeText = size },
+                    selected = selectedSize == size,
+                    onClick = { onSizeSelected(size) },
                     modifier = Modifier
                         .weight(1f)
                         .height(46.dp)
                 )
-
             }
         }
     }
-
 }

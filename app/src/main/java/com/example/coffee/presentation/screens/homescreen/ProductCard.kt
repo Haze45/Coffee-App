@@ -16,8 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
@@ -35,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.coffee.R
 import com.example.coffee.domain.model.Product
 import com.example.coffee.presentation.navigation.Routes
 import com.example.coffee.presentation.theme.IvoryWhite
@@ -88,8 +87,7 @@ fun ProductCart(
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Icon(
-                        imageVector = if (product.isFavorite) Icons.Default.Favorite
-                        else Icons.Default.FavoriteBorder,
+                        painter = painterResource(id = R.drawable.regular_outline_heart),
                         contentDescription = "Favorite",
                         tint = if (product.isFavorite) Color.Red else LightBrown,
                         modifier = Modifier.size(24.dp)

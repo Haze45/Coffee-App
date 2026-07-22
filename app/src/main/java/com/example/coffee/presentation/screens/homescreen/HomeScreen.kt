@@ -43,11 +43,9 @@ fun HomeScreen(
         bottomBar = { MyBottomNavBar(navController, "Home") }
     ) { innerPadding ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
+            modifier = Modifier.fillMaxSize()
         ) {
-            // Background gradient for the top section
+            // Background gradient for the top section - stays full-bleed
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -65,20 +63,22 @@ fun HomeScreen(
 
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
+                    .padding(top = innerPadding.calculateTopPadding()) // Handle status bar
+                    .padding(bottom = innerPadding.calculateBottomPadding()) // Handle navigation bar
                     .padding(horizontal = 16.dp)
             ) {
                 ProductsGrid(
                     products = state.products,
                     navController = navController,
-                    onEvent = viewModel::onEvent // Pass event handler to grid
+                    onEvent = viewModel::onEvent
                 ) {
                     // Header content inside the scrollable list
                     Column {
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = "Location",
-                            color = Color.Gray,
+                            color = Color.LightGray, // Improved visibility
                             fontSize = 14.sp
                         )
 

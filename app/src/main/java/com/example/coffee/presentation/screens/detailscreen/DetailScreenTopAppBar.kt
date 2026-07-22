@@ -3,12 +3,14 @@ package com.example.coffee.presentation.screens.detailscreen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -18,8 +20,11 @@ import com.example.coffee.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailScreenTopAppBar(navController: NavController) {
-
+fun DetailScreenTopAppBar(
+    navController: NavController,
+    isFavorite: Boolean,
+    onFavoriteClick: () -> Unit
+) {
     TopAppBar(
         title = {
             Text(
@@ -41,11 +46,13 @@ fun DetailScreenTopAppBar(navController: NavController) {
         actions = {
             Icon(
                 painter = painterResource(id = R.drawable.regular_outline_heart),
-                contentDescription = "Add to Favorite",
-                modifier = Modifier.padding(start = 12.dp)
+                contentDescription = "Toggle Favorite",
+                modifier = Modifier
+                    .padding(start = 12.dp)
+                    .size(24.dp)
+                    .clickable { onFavoriteClick() },
+                tint = if (isFavorite) Color.Red else Color.Black
             )
         }
     )
-
-
 }

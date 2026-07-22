@@ -25,10 +25,13 @@ import androidx.compose.ui.unit.sp
 import com.example.coffee.presentation.theme.IvoryWhite
 import com.example.coffee.presentation.theme.LightBrown
 import com.example.coffee.presentation.ui_components.AppMessageDialog
+import java.util.Locale
 
 @Composable
-fun DetailScreenBottomAppBar() {
-
+fun DetailScreenBottomAppBar(
+    price: Double,
+    onAddToCart: () -> Unit
+) {
     var showCartDialog by remember { mutableStateOf(false) }
 
     BottomAppBar(
@@ -38,14 +41,14 @@ fun DetailScreenBottomAppBar() {
             modifier = Modifier.padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column() {
+            Column {
                 Text(
                     text = "Price",
                     fontSize = 16.sp
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "$4.53",
+                    text = "$ ${String.format(Locale.US, "%.2f", price)}",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.SemiBold
                 )
@@ -54,7 +57,10 @@ fun DetailScreenBottomAppBar() {
             Spacer(modifier = Modifier.weight(1f))
 
             Button(
-                onClick = { showCartDialog = true },
+                onClick = { 
+                    onAddToCart()
+                    showCartDialog = true 
+                },
                 modifier = Modifier
                     .width(280.dp)
                     .height(56.dp),
@@ -76,7 +82,6 @@ fun DetailScreenBottomAppBar() {
                 title = "Added to Cart",
                 message = "Item added to cart",
                 onDismiss = { showCartDialog = false }
-
             )
         }
     }
