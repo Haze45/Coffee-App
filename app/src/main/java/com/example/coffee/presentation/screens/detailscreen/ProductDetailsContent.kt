@@ -14,12 +14,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -27,8 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.coffee.R
 import com.example.coffee.domain.model.Product
-import com.example.coffee.presentation.theme.IvoryWhite
-import com.example.coffee.presentation.theme.LightBrown
 
 @Composable
 fun ProductDetailsContent(
@@ -57,7 +55,7 @@ fun ProductDetailsContent(
             text = product.name,
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -70,7 +68,7 @@ fun ProductDetailsContent(
             Text(
                 text = "Ice/Hot",
                 fontSize = 16.sp,
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.Medium
             )
             Icon(
@@ -78,18 +76,18 @@ fun ProductDetailsContent(
                 contentDescription = "Bean",
                 modifier = Modifier
                     .background(
-                        color = IvoryWhite,
+                        color = MaterialTheme.colorScheme.primaryContainer,
                         shape = RoundedCornerShape(10.dp)
                     )
                     .size(36.dp)
                     .padding(6.dp),
-                tint = LightBrown
+                tint = MaterialTheme.colorScheme.primary
             )
         }
         Spacer(modifier = Modifier.height(24.dp))
 
         HorizontalDivider(
-            color = Color.LightGray.copy(alpha = 0.5f),
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -98,7 +96,7 @@ fun ProductDetailsContent(
             text = "Description",
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -106,7 +104,7 @@ fun ProductDetailsContent(
         Text(
             text = product.description,
             fontSize = 16.sp,
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontWeight = FontWeight.Medium
         )
 
@@ -115,7 +113,7 @@ fun ProductDetailsContent(
         Text(
             text = "Size",
             fontSize = 16.sp,
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontWeight = FontWeight.Medium
         )
 

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -20,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.coffee.R
-import com.example.coffee.presentation.theme.LightBrown
 
 @Composable
 fun MySearchBar(
@@ -34,31 +34,31 @@ fun MySearchBar(
         TextField(
             value = value,
             onValueChange = onValueChange,
-            placeholder = { Text(text = "Search Coffee", color = Color.Gray) },
+            placeholder = { 
+                Text(
+                    text = "Search Coffee", 
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+                ) 
+            },
             leadingIcon = {
                 Icon(
                     painter = painterResource(R.drawable.regular_outline_search),
                     contentDescription = "Search",
                     modifier = Modifier.size(20.dp),
-                    tint = Color.White
+                    tint = MaterialTheme.colorScheme.primary
                 )
             },
-            shape = RoundedCornerShape(
-                topStart = 16.dp,
-                topEnd = 0.dp,
-                bottomStart = 16.dp,
-                bottomEnd = 0.dp
-            ),
+            shape = RoundedCornerShape(16.dp), // Simplified shape for better theme consistency
             singleLine = true,
-            modifier = Modifier.weight(1f).height(60.dp),
+            modifier = Modifier.weight(1f).height(56.dp),
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = Color(0xFF422A2A),
-                unfocusedContainerColor = Color(0xFF2A2A2A),
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
-                cursorColor = Color.LightGray,
-                focusedTextColor = Color.White,
-                unfocusedTextColor = Color.Gray
+                cursorColor = MaterialTheme.colorScheme.primary,
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface
             )
         )
 
@@ -67,21 +67,16 @@ fun MySearchBar(
         IconButton(
             onClick = { /*TODO*/ },
             modifier = Modifier
-                .size(width = 50.dp, height = 58.dp)
+                .size(56.dp)
                 .background(
-                    color = LightBrown,
-                    shape = RoundedCornerShape(
-                        topStart = 0.dp,
-                        topEnd = 16.dp,
-                        bottomStart = 0.dp,
-                        bottomEnd = 16.dp
-                    )
+                    color = MaterialTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(16.dp)
                 )
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.regular_outline_filter),
                 contentDescription = "Filter",
-                tint = Color.White
+                tint = MaterialTheme.colorScheme.onPrimary
             )
         }
     }

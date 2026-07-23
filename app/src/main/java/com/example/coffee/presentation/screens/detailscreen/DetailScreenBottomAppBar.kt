@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,8 +23,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.coffee.presentation.theme.IvoryWhite
-import com.example.coffee.presentation.theme.LightBrown
 import com.example.coffee.presentation.ui_components.AppMessageDialog
 import java.util.Locale
 
@@ -38,36 +37,39 @@ fun DetailScreenBottomAppBar(
         containerColor = Color.Transparent
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 16.dp),
+            modifier = Modifier
+                .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column {
                 Text(
                     text = "Price",
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "$ ${String.format(Locale.US, "%.2f", price)}",
+                    text = String.format(Locale.US, "$ %.2f", price),
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.SemiBold
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.primary
                 )
             }
 
             Spacer(modifier = Modifier.weight(1f))
 
             Button(
-                onClick = { 
+                onClick = {
                     onAddToCart()
-                    showCartDialog = true 
+                    showCartDialog = true
                 },
                 modifier = Modifier
                     .width(280.dp)
                     .height(56.dp),
                 shape = RoundedCornerShape(16.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = LightBrown,
-                    contentColor = IvoryWhite
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
                 )
             ) {
                 Text(

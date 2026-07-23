@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -34,7 +35,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.coffee.R
-import com.example.coffee.presentation.theme.LightBrown
 
 @Composable
 fun PaymentModeCard(totalAmount: Double) {
@@ -44,7 +44,10 @@ fun PaymentModeCard(totalAmount: Double) {
     val paymentMode = listOf("Online", "Cash")
 
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
     ) {
         Column(
             modifier = Modifier.padding(24.dp)
@@ -53,8 +56,6 @@ fun PaymentModeCard(totalAmount: Double) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
-
-
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically
@@ -63,64 +64,57 @@ fun PaymentModeCard(totalAmount: Double) {
                         painter = painterResource(id = if (selectedMode == "Online") R.drawable.mobile_banking else R.drawable.wallet),
                         contentDescription = "Payment Method",
                         modifier = Modifier.size(30.dp),
-                        tint = LightBrown
+                        tint = MaterialTheme.colorScheme.primary
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
 
-                    Column() {
+                    Column {
                         Text(
                             text = selectedMode,
                             style = MaterialTheme.typography.bodyLarge.copy(
-                                fontWeight = FontWeight.SemiBold
+                                fontWeight = FontWeight.SemiBold,
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         )
 
                         Spacer(modifier = Modifier.height(4.dp))
 
-                        if (selectedMode == "Online") {
-                            Text(
-                                text = "$ $totalAmount",
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = LightBrown
-                            )
-                        } else {
-                            Text(
-                                text = "$ ${totalAmount + 1.0}",
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = LightBrown
-                            )
-                        }
-
-
+                        val displayAmount = if (selectedMode == "Online") totalAmount else totalAmount + 1.0
+                        Text(
+                            text = "$ ${String.format("%.2f", displayAmount)}",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.primary
+                        )
                     }
                 }
-                Box() {
+                Box {
                     Icon(
                         painter = painterResource(id = R.drawable.regular_outline_arrow_down),
                         contentDescription = "Change payment mode",
                         modifier = Modifier
                             .size(20.dp)
-                            .clickable { expanded = true }
+                            .clickable { expanded = true },
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
 
                     DropdownMenu(
                         expanded = expanded,
-                        onDismissRequest = { expanded = false }
+                        onDismissRequest = { expanded = false },
+                        modifier = Modifier.background(MaterialTheme.colorScheme.surface)
                     ) {
                         paymentMode.forEach { mode ->
                             DropdownMenuItem(
                                 text = {
                                     Text(
                                         text = mode,
-                                        style = MaterialTheme.typography.bodyLarge
-
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        color = MaterialTheme.colorScheme.onSurface
                                     )
                                 },
                                 onClick = {
                                     selectedMode = mode
                                     expanded = false
-
                                 },
                                 leadingIcon = {
                                     Icon(
@@ -128,21 +122,19 @@ fun PaymentModeCard(totalAmount: Double) {
                                             if (mode == "Online") R.drawable.mobile_banking else R.drawable.wallet
                                         ),
                                         contentDescription = null,
-                                        tint = LightBrown,
+                                        tint = MaterialTheme.colorScheme.primary,
                                         modifier = Modifier.size(24.dp)
                                     )
                                 },
                                 modifier = Modifier
                                     .padding(horizontal = 4.dp)
                                     .background(
-                                        color = if (selectedMode == mode) LightBrown.copy(alpha = 0.1f) else Color.Transparent
+                                        color = if (selectedMode == mode) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else Color.Transparent
                                     )
                             )
                         }
                     }
                 }
-
-
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -153,8 +145,8 @@ fun PaymentModeCard(totalAmount: Double) {
                     .fillMaxWidth()
                     .height(50.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = LightBrown,
-                    contentColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
                 ),
                 shape = RoundedCornerShape(10.dp)
             ) {

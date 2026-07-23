@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
-import com.example.coffee.presentation.theme.LightBrown
 
 @Composable
 fun DetailScreen(
@@ -40,13 +40,14 @@ fun DetailScreen(
                     onAddToCart = { viewModel.onEvent(DetailEvent.AddToCart(product.id)) }
                 )
             }
-        }
+        },
+        containerColor = MaterialTheme.colorScheme.background
     ) { innerPadding ->
         Box(modifier = Modifier.fillMaxSize().padding(innerPadding)) {
             if (state.isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.align(Alignment.Center),
-                    color = LightBrown
+                    color = MaterialTheme.colorScheme.primary
                 )
             } else if (state.product != null) {
                 LazyColumn {
@@ -61,7 +62,7 @@ fun DetailScreen(
             } else {
                 Text(
                     text = "Product not found!",
-                    color = Color.Red,
+                    color = MaterialTheme.colorScheme.error,
                     modifier = Modifier.align(Alignment.Center)
                 )
             }

@@ -36,9 +36,6 @@ import androidx.navigation.NavController
 import com.example.coffee.R
 import com.example.coffee.domain.model.Product
 import com.example.coffee.presentation.navigation.Routes
-import com.example.coffee.presentation.theme.IvoryWhite
-import com.example.coffee.presentation.theme.LightBrown
-import com.example.coffee.presentation.theme.LightGray
 
 @Composable
 fun ProductCart(
@@ -55,7 +52,7 @@ fun ProductCart(
             .clickable { navController.navigate(Routes.DetailScreen(product.id)) },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
-            containerColor = LightGray
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
 
     ) {
@@ -80,7 +77,7 @@ fun ProductCart(
                         .align(Alignment.TopEnd)
                         .padding(8.dp)
                         .background(
-                            color = LightGray.copy(alpha = 0.7f),
+                            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.6f),
                             shape = RoundedCornerShape(8.dp)
                         )
                         .clickable { onFavoriteClick(product.id) }
@@ -89,7 +86,7 @@ fun ProductCart(
                     Icon(
                         painter = painterResource(id = R.drawable.regular_outline_heart),
                         contentDescription = "Favorite",
-                        tint = if (product.isFavorite) Color.Red else LightBrown,
+                        tint = if (product.isFavorite) Color.Red else MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(21.dp)
                     )
                 }
@@ -100,7 +97,7 @@ fun ProductCart(
             Text(
                 text = product.name,
                 style = MaterialTheme.typography.titleMedium.copy(
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.SemiBold
                 )
             )
@@ -110,9 +107,8 @@ fun ProductCart(
             Text(
                 text = product.description,
                 style = MaterialTheme.typography.titleSmall.copy(
-                    color = Color.Black,
-
-                    ),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                ),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
@@ -127,22 +123,24 @@ fun ProductCart(
                     text = "$${product.price}",
                     style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.Bold,
-                        color = LightBrown
+                        color = MaterialTheme.colorScheme.primary
                     )
                 )
                 IconButton(
                     onClick = { onAddToCartClick(product.id) },
-                    modifier = Modifier.background(
-                        color = LightBrown,
-                        shape = RoundedCornerShape(10.dp)
-                    )
+                    modifier = Modifier
+                        .size(32.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primary,
+                            shape = RoundedCornerShape(10.dp)
+                        )
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = "Add to Cart",
-                        tint = IvoryWhite,
-
-                        )
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.size(20.dp)
+                    )
                 }
             }
 

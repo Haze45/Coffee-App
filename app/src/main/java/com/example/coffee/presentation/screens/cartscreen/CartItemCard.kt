@@ -2,7 +2,9 @@ package com.example.coffee.presentation.screens.cartscreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +19,6 @@ import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,14 +26,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.coffee.domain.model.Product
-import com.example.coffee.presentation.theme.LightBrown
-import com.example.coffee.presentation.theme.LightGray
 import java.util.Locale
-
 
 @Composable
 fun CartItemCard(
@@ -40,19 +39,19 @@ fun CartItemCard(
     onIncrease: () -> Unit,
     onDecrease: () -> Unit
 ) {
-    // Calculate total price for this item based on quantity
     val itemTotalPrice = product.price * product.quantity
 
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(6.dp),
+            .padding(vertical = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = LightGray
+            containerColor = MaterialTheme.colorScheme.surface
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
-        )
+            defaultElevation = 2.dp
+        ),
+        shape = RoundedCornerShape(16.dp)
     ) {
         Row(
             modifier = Modifier
@@ -64,9 +63,10 @@ fun CartItemCard(
             Image(
                 painter = painterResource(id = product.imageRes),
                 contentDescription = "Product Image",
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(70.dp)
-                    .clip(RoundedCornerShape(10.dp))
+                    .size(75.dp)
+                    .clip(RoundedCornerShape(12.dp))
             )
             Column(
                 modifier = Modifier
@@ -75,23 +75,23 @@ fun CartItemCard(
             ) {
                 Text(
                     text = product.name,
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.SemiBold
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 )
 
                 Text(
                     text = product.description,
                     style = MaterialTheme.typography.bodySmall.copy(
-                        color = Color.DarkGray
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 )
 
-                // Display dynamic price
                 Text(
-                    text = "$ ${String.format(Locale.US, "%.2f", itemTotalPrice)}",
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        color = LightBrown,
+                    text = String.format(Locale.US, "$ %.2f", itemTotalPrice),
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.Bold
                     ),
                     modifier = Modifier.padding(top = 4.dp)
@@ -100,43 +100,52 @@ fun CartItemCard(
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(18.dp)
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                IconButton(
-                    onClick = onDecrease,
+                Box(
                     modifier = Modifier
+                        .size(35.dp)
                         .background(
-                            color = if (product.quantity > 1) LightBrown.copy(alpha = 0.23f) else Color.Red.copy(alpha = 0.1f),
+                            color = if (product.quantity > 1)
+                                MaterialTheme.colorScheme.primary.copy(alpha = 0.1f)
+                            else Color.Red.copy(alpha = 0.1f),
                             shape = CircleShape
                         )
-                        .size(24.dp)
+                        .clip(CircleShape)
+                        .clickable { onDecrease() },
+                    contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = if (product.quantity > 1) Icons.Default.Remove else Icons.Default.Delete,
-                        contentDescription = if (product.quantity > 1) "Decrease" else "Remove",
-                        tint = if (product.quantity > 1) LightBrown else Color.Red,
+                        contentDescription = "Decrease",
+                        tint = if (product.quantity > 1) MaterialTheme.colorScheme.primary else Color.Red,
                         modifier = Modifier.size(16.dp)
                     )
                 }
+
                 Text(
                     text = product.quantity.toString(),
                     style = MaterialTheme.typography.bodyLarge.copy(
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 )
-                IconButton(
-                    onClick = onIncrease,
+
+                Box(
                     modifier = Modifier
+                        .size(35.dp)
                         .background(
-                            color = LightBrown.copy(alpha = 0.23f),
+                            color = MaterialTheme.colorScheme.primary,
                             shape = CircleShape
                         )
-                        .size(24.dp)
+                        .clip(CircleShape)
+                        .clickable { onIncrease() },
+                    contentAlignment = Alignment.Center
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
                         contentDescription = "Increase",
-                        tint = LightBrown,
+                        tint = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.size(16.dp)
                     )
                 }

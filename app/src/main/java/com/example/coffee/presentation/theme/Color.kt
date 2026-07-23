@@ -2,17 +2,19 @@ package com.example.coffee.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
-val Purple40 = Color(0xFF6650a4)
-val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
-
-val CoffeeBrown = Color(0xFFC47B4D)
-val CreamBeige = Color(0xFFEBD4C6)
-val CharcoalGray = Color(0xFF313131)
-val LightGray = Color(0xFFE1E1E1)
-val IvoryWhite = Color(0xFFF7F0EB)
+// Primary Brand Colors
 val LightBrown = Color(0xFFC67C4E)
+val CoffeeBrown = Color(0xFFC47B4D)
+
+// Neutral Colors - Light Theme
+val IvoryWhite = Color(0xFFF7F0EB)
+val LightGray = Color(0xFFE1E1E1)
+
+// Neutral Colors - Dark Theme
+val DeepBlack = Color(0xFF0C0F14)
+val DarkSurface = Color(0xFF141921)
+val CharcoalGray = Color(0xFF313131)
+
+// Text/Secondary Colors
+val TextGray = Color(0xFF919293)
+val DarkTextGray = Color(0xFF4D4D4D)
